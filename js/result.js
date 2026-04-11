@@ -99,7 +99,7 @@ function saveMemo() {
 };
 
 function retry() {
-  const url = new URL("measurement.html", location.origin);
+  const url = new URL("measurement.html", location.href);
   url.searchParams.set("date", workDate);
   location.href = url.toString();
 };

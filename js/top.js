@@ -38,7 +38,7 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 function openText() {
-  const url = new URL("measurement.html", location.origin);
+  const url = new URL("measurement.html", location.href);
   url.searchParams.set("date", today);
   location.href = url.toString();
 };
