@@ -2,7 +2,7 @@ import { formatTimeMs, formatYMD, formatYMDhms } from "./date.js";
 import { loadDateMap, loadRecords } from "./storage.js";
 import { loadContents, findContent } from "./contents.js";
 import { getTodayRecords, sortByCreatedAt, calcStreak } from "./records.js";
-let current = new Date();
+let today = new Date();
 let contents = null;
 let dateMap = {};
 let records = [];
@@ -23,8 +23,8 @@ async function init() {
 }
 
 function renderCalendar() {
-  const year = current.getFullYear();
-  const month = current.getMonth();
+  const year = today.getFullYear();
+  const month = today.getMonth();
 
   document.getElementById("monthLabel").textContent = `${year} / ${month + 1}`;
 
@@ -160,22 +160,22 @@ function renderDetail(dateStr) {
 }
 
 function prevYear() {
-  current.setFullYear(current.getFullYear() - 1);
+  today.setFullYear(today.getFullYear() - 1);
   renderCalendar();
 }
 
 function prevMonth() {
-  current.setMonth(current.getMonth() - 1);
+  today.setMonth(today.getMonth() - 1);
   renderCalendar();
 }
 
 function nextMonth() {
-  current.setMonth(current.getMonth() + 1);
+  today.setMonth(today.getMonth() + 1);
   renderCalendar();
 }
 
 function nextYear() {
-  current.setFullYear(current.getFullYear() + 1);
+  today.setFullYear(today.getFullYear() + 1);
   renderCalendar();
 }
 
