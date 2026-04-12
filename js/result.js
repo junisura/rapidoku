@@ -35,10 +35,12 @@ async function init() {
 
     const diffEl = document.getElementById("prev-diff");
     if (diff >= 0) {
-      diffEl.textContent = `（+${diff.toFixed(2)}）`;
+      diffEl.textContent = `+${diff.toFixed(2)}文字/秒`;
       diffEl.classList.add("good");
+    } else if (diff === 0) {
+      diffEl.textContent = `${diff.toFixed(2)}文字/秒`;
     } else {
-      diffEl.textContent = `（-${diff.toFixed(2)}）`;
+      diffEl.textContent = `${diff.toFixed(2)}文字/秒`;
       diffEl.classList.add("bad");
     }
   }
