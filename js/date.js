@@ -46,6 +46,43 @@ export function formatYMD(iso) {
   return `${map.year}-${map.month}-${map.day}`;
 }
 
+export function formatJpYMD(iso) {
+  const date = new Date(iso);
+
+  const parts = new Intl.DateTimeFormat("ja-JP", {
+    timeZone: "Asia/Tokyo",
+    year: "numeric",
+    month: "numeric",
+    day: "numeric"
+  }).formatToParts(date);
+
+  const map = {};
+  for (const p of parts) {
+    map[p.type] = p.value;
+  }
+
+  return `${map.year}年${map.month}月${map.day}日`;
+}
+
+export function formatJpMDA(iso) {
+  const date = new Date(iso);
+  const weekDay = ["日", "月", "火", "水", "木", "金", "土"];
+
+  const parts = new Intl.DateTimeFormat("ja-JP", {
+    timeZone: "Asia/Tokyo",
+    month: "numeric",
+    day: "numeric"
+  }).formatToParts(date);
+
+  const map = {};
+  for (const p of parts) {
+    map[p.type] = p.value;
+  }
+  map['weekday'] = weekDay[date.getDay()];
+
+  return `${map.month}月${map.day}日（${map.weekday}）`;
+}
+
 export function guardSameDay(workDate) {
   const today = formatYMD(new Date().toISOString());
 

@@ -34,6 +34,23 @@ export function calcSummary(records) {
   return { count, max, avg };
 }
 
+export function getBestRecord(records) {
+  if (!records || records.length === 0) return null;
+
+  let best = records[0];
+
+  for (const r of records) {
+    if (
+      r.speed > best.speed ||
+      (r.speed === best.speed && r.created_at > best.created_at)
+    ) {
+      best = r;
+    }
+  }
+
+  return best;
+}
+
 export function generateId() {
   if (crypto.randomUUID) return crypto.randomUUID();
   return `${Date.now()}-${Math.random().toString(16).slice(2)}`;

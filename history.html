@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+  <script type="module" src="./js/auth.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
@@ -9,65 +10,90 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-  <link href="./css/common.css" rel="stylesheet">
-  <link href="./css/calendar.css" rel="stylesheet">
-  <link href="./css/record-list.css" rel="stylesheet">
+  <link href="./css/base.css" rel="stylesheet">
+  <link href="./css/components.css" rel="stylesheet">
+  <link href="./css/layout.css" rel="stylesheet">
+  <link href="./css/utilities.css" rel="stylesheet">
   <script type="module" src="./js/history.js"></script>
-  <title>音読アプリ - 過去ログ</title>
-  <style>
-#streak-section {
-  text-align: center;
-}
-.compact-title {
-  margin: 0.5rem 0;
-}
-  </style>
+  <title>まいにち！ラピ読 - 過去ログ</title>
 </head>
-<body>
+<body class="page page--history">
 
-<h1>過去ログ</h1>
-<section>
-  <div id="month">
-    <button id="prevYearBtn" class="compact material-symbols-outlined">keyboard_double_arrow_left</button>
-    <button id="prevMonthBtn" class="compact material-symbols-outlined">keyboard_arrow_left</button>
-    <span id="monthLabel"></span>
-    <button id="nextMonthBtn" class="compact material-symbols-outlined">keyboard_arrow_right</button>
-    <button id="nextYearBtn" class="compact material-symbols-outlined">keyboard_double_arrow_right</button>
-  </div>
-  <div id="calendar" class="calendar"></div>
-</section>
-<section id="streak-section" class="under-border">
-  <div id="streak" class="large"></div>
-  <span id="warning" class="bad hidden">今日の分がまだだよ！</span>
-</section>
-
-<section id="detail">
-  <h2 class="small">詳細</h2>
-  <div id="records"></div>
-  <div id="content-info">
-    <h3 id="title" class="compact-title"></h3>
-    <h4 id="genre" class="compact-title"></h4>
-    <div id="text"></div>
-  </div>
-</section>
-
-<section>
-  <button id="backBtn" onclick="location.href='index.html'" class="compact">
-    <span class="material-symbols-outlined">arrow_back_2</span>
-    <span class="label">戻る</span>
-  </button>
-</section>
-
-<template id="record-item-template">
-  <div class="record-item">
-    <div class="main-row score">
-      <span class="attempt"></span>
-      <span class="speed"></span>
-      <span class="time"></span>
+  <!-- 共通ヘッダー -->
+  <header class="header">
+    <div class="header__inner">
+      <button class="btn btn--secondary header__back">
+        ← TOPへ
+      </button>
     </div>
-    <div class="memo"></div>
-  </div>
-</template>
+  </header>
+
+  <main class="container">
+
+    <!-- カレンダー -->
+    <section class="card card--main">
+      <div class="card__header">
+        <h2 class="card__title">記録カレンダー</h2>
+        <div class="calendar__nav">
+          <button class="btn btn--secondary">‹</button>
+          <span class="calendar__month">2024年5月</span>
+          <button class="btn btn--secondary">›</button>
+        </div>
+      </div>
+
+      <div class="card__body">
+        <div class="calendar">
+
+          <!-- 曜日 -->
+          <div class="calendar__week">
+            <span>日</span><span>月</span><span>火</span>
+            <span>水</span><span>木</span><span>金</span><span>土</span>
+          </div>
+
+          <!-- 日付 -->
+          <div class="calendar__grid">
+
+            <button class="calendar__day">1</button>
+            <button class="calendar__day is-recorded">2</button>
+            <button class="calendar__day is-recorded is-selected">3</button>
+            <button class="calendar__day">4</button>
+            <button class="calendar__day">5</button>
+
+            <!-- 以下ループ -->
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 選択日の記録 -->
+    <section class="card card--sub mt-16">
+      <div class="card__header">
+        <h3 class="card__title">m月d日(aaa)の記録</h3>
+      </div>
+
+      <ul class="list">
+        <li class="list__item">
+          <span>n回目</span>
+          <span>mi:ss.sss</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- テキスト本文 -->
+    <section class="card card--sub mt-16">
+      <div class="card__header">
+        <h3 class="card__title">テキストタイトル</h3>
+        <p class="text-category">テキストカテゴリ</p>
+      </div>
+
+      <div class="card__body">
+        <p class="text-body">テキスト本文</p>
+      </div>
+    </section>
+
+  </main>
 </body>
 </html>

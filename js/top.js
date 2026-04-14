@@ -1,7 +1,7 @@
-import { formatYMD } from "./date.js";
+import { formatYMD, formatJpYMD, formatJpMDA } from "./date.js";
 import { loadDateMap, saveDateMap, loadRecords } from "./storage.js";
 import { loadContents, findContent, ensureTodayContent } from "./contents.js";
-import { getTodayRecords, calcSummary } from "./records.js";
+import { getTodayRecords, getBestRecord } from "./records.js";
 
 let today = "";
 
@@ -11,24 +11,22 @@ async function init() {
   const dateMap = loadDateMap();
   const records = loadRecords();
 
-  today = formatYMD(new Date().toISOString());
+  const todayISO = new Date().toISOString();
+  today = formatYMD(todayISO);
   const contentId = ensureTodayContent(dateMap, contents, today);
   saveDateMap(dateMap);
 
   const current = findContent(contents, contentId);
 
-  const todayRecords = getTodayRecords(records, today);
-  const summary = calcSummary(todayRecords);
+  const bestRecord = getBestRecord(records);
 
   // DOM反映
-  document.getElementById("count").textContent = summary.count + " 回";
-  document.getElementById("max-speed").textContent =
-    summary.max === 0 ? "(未計測)" : summary.max.toFixed(2) + " 文字/秒";
-  document.getElementById("avg-speed").textContent =
-    summary.avg === 0 ? "(未計測)" : summary.avg.toFixed(2) + " 文字/秒";
-
-  document.getElementById("genre").textContent = `【${current.genre}】`;
-  document.getElementById("title").textContent = current.title;
+  document.getElementById("today-date").textContent = formatJpMDA(todayISO);
+  document.getElementById("text-title").textContent = current.title;
+  document.getElementById("text-category").textContent = current.genre;
+  document.getElementById("best-record").textContent = 
+    `${bestRecord.speed.toFixed(2)}文字/秒（${bestRecord.time_sec.toFixed(2)}秒）`;
+  document.getElementById("best-date").textContent = formatJpYMD(bestRecord.work_date);
 
 }
 

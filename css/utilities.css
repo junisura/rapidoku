@@ -1,0 +1,11 @@
+.mt-8 { margin-top: 8px; }
+.mt-16 { margin-top: 16px; }
+
+.mb-8 { margin-bottom: 8px; }
+.mb-16 { margin-bottom: 16px; }
+
+.text-center { text-align: center; }
+
+.font-medium { font-size: medium; }
+
+.score { font-family: "JetBrains Mono", monospace; }

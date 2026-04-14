@@ -1,0 +1,49 @@
+/* control全体 */
+.control {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* メイン操作 */
+.control__main {
+  width: 100%;
+  text-align: center;
+}
+
+/* 大きい開始ボタン */
+.btn--large {
+  width: 100%;
+  padding: 16px;
+  font-size: 18px;
+  border-radius: 999px;
+}
+
+/* サブ操作（左右） */
+.control__side {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 12px;
+}
+
+.control__reset,
+.control__stop {
+  flex: 1;
+}
+
+/* タイマー */
+.timer {
+  text-align: center;
+}
+
+.timer__value {
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--color-gray-900);
+}
+
+/* 補助 */
+.text-right {
+  text-align: right;
+}
