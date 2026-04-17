@@ -1,6 +1,6 @@
-import { formatYMD, guardSameDay } from "./date.js";
+import { formatYMD, guardSameDay, formatTimeMs, formatTimeHm } from "./date.js";
 import { loadRecords, saveRecords } from "./storage.js";
-import { getTodayRecords, sortByCreatedAt, getLastTwoRecords, calcSummary } from "./records.js";
+import { getTodayRecords, getLastTwoRecords, getBestRecord, sortByCreatedAt, calcSummary } from "./records.js";
 
 // データ読み込み
 const records = loadRecords();
@@ -8,6 +8,9 @@ const params = new URLSearchParams(location.search);
 const workDate = params.get("date") || formatYMD(new Date());
 const today = formatYMD(new Date().toISOString());
 guardSameDay(workDate);
+
+let memoInput = null;
+let memoOutput = null;
 
 // 初期化
 async function init() {
@@ -19,34 +22,42 @@ async function init() {
   }
   const last = todayRecords[todayRecords.length - 1];
 
-  document.getElementById("attempt").textContent = todayRecords.length;
-  document.getElementById("last-record").textContent =
-    `${last.speed.toFixed(2)}文字/秒 （${last.time_sec.toFixed(2)}秒）`;
-  document.getElementById("memo").value = last.memo || "";
+  const lastTime = formatTimeMs(last.time_sec);
+  document.getElementById("last__time").textContent = lastTime;
+  document.getElementById("last__speed").textContent = `（${last.speed.toFixed(2)}文字/秒）`;
+
+  memoInput = document.getElementById("memo__input");
+  memoOutput = document.getElementById("memo__output");
+  if (last.memo) {
+    memoOutput.textContent = `メモ：　${last.memo}`;
+    switchMemoDisplay(true);
+  }
 
   const { current, prev } = getLastTwoRecords(records, workDate);
-  const el = document.getElementById("prev-speed");
 
   if (prev) {
-    document.getElementById("summary").classList.remove("hidden");
-    const diff = current.speed - prev.speed;
-    el.textContent = `${prev.speed.toFixed(2)}文字/秒`;
+    document.getElementById("diff-card").classList.remove("display-none");
+    document.getElementById("prev__time").textContent = formatTimeMs(prev.time_sec);
+    document.getElementById("prev__speed").textContent = `（${prev.speed.toFixed(2)}文字/秒）`;
 
-    const diffEl = document.getElementById("prev-diff");
-    if (diff >= 0) {
-      diffEl.textContent = `+${diff.toFixed(2)}文字/秒`;
-      diffEl.classList.add("good");
+    const diff = current.time_sec - prev.time_sec;
+    const diffTime = document.getElementById("diff__time");
+    if (diff > 0) {
+      // 正数の場合は符号なしで返されるので符号を付与する
+      diffTime.textContent = `+${formatTimeMs(diff)}　DOWN...`;
+      diffTime.classList.add("text-danger");
     } else if (diff === 0) {
-      diffEl.textContent = `${diff.toFixed(2)}文字/秒`;
+      diffTime.textContent = `${formatTimeMs(diff)}`;
     } else {
-      diffEl.textContent = `${diff.toFixed(2)}文字/秒`;
-      diffEl.classList.add("bad");
+      // 負数の場合は符号付きで返される
+      diffTime.textContent = `${formatTimeMs(diff)}　UP!!`;
+      diffTime.classList.add("text-success");
     }
   }
 
   const best = Math.max(...records.map(r => r.speed));
   if (last.speed >= best) {
-    document.getElementById("best").classList.remove("hidden");
+    document.getElementById("best-updated").classList.remove("hidden");
   }
 
   initRecords();
@@ -54,27 +65,30 @@ async function init() {
 
 // 各回の記録
 function initRecords() {
-  const listEl = document.getElementById("records");
-  const template = document.getElementById("record-item-template");
-  listEl.innerHTML = "";
+  const list = document.getElementById("records");
+  const template = document.getElementById("list-item-template");
+  list.innerHTML = "";
 
   const todayRecords = getTodayRecords(records, workDate);
+  const todayBestRec = getBestRecord(todayRecords);
   const sorted = sortByCreatedAt(todayRecords, true);
   sorted.forEach((record, index) => {
     const clone = template.content.cloneNode(true);
 
-    clone.querySelector(".attempt").textContent = `${record.attempt_index}回目`;
-    clone.querySelector(".speed").textContent = `${record.speed.toFixed(2)}文字/秒`;
-    clone.querySelector(".time").textContent = `（${record.time_sec.toFixed(2)}秒）`;
-
-    const memoEl = clone.querySelector(".memo");
+    if (todayBestRec.attempt_index === record.attempt_index) {
+      clone.querySelector(".list__item").classList.add("is-best");
+      clone.querySelector(".item__best").textContent = "crown";
+    }
+    clone.querySelector(".item__attempt").textContent = `${record.attempt_index}回目`;
+    clone.querySelector(".item__timestamp").textContent = formatTimeHm(record.created_at);
+    clone.querySelector(".item__time").textContent = formatTimeMs(record.time_sec);
     if (record.memo) {
-      memoEl.textContent = record.memo;
+      clone.querySelector(".item__memo").textContent = record.memo;
     } else {
-      memoEl.style.display = "none";
+      clone.querySelector(".item__memo").classList.add("display-none");
     }
 
-    listEl.appendChild(clone);
+    list.appendChild(clone);
   });
 }
 
@@ -88,16 +102,14 @@ window.addEventListener("DOMContentLoaded", () => {
 function saveMemo() {
   const todayRecords = getTodayRecords(records, workDate);
   const last = todayRecords[todayRecords.length - 1];
-  const memoEl = document.getElementById("memo");
+
   if (last) {
-    last.memo = memoEl.value;
+    last.memo = memoInput.value;
     saveRecords(records);
   }
 
-  const saveMemoBtn = document.getElementById("saveMemoBtn");
-  memoEl.style.display ="none";
-  saveMemoBtn.style.display ="none";
-  document.getElementById("savedMemo").textContent = `一言メモ：　${memoEl.value}`;
+  memoOutput.textContent = `メモ：　${memoInput.value}`;
+  switchMemoDisplay(true);
 
   alert("保存しました！");
   
@@ -110,3 +122,14 @@ function retry() {
   location.href = url.toString();
 };
 
+function switchMemoDisplay(isOutput) {
+  if (isOutput) {
+    document.getElementById("saveMemoBtn").classList.add("display-none");
+    memoInput.classList.add("display-none");
+    memoOutput.classList.remove("display-none");
+  } else {
+    document.getElementById("saveMemoBtn").classList.remove("display-none");
+    memoInput.classList.remove("display-none");
+    memoOutput.classList.add("display-none");
+  }
+}

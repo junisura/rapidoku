@@ -23,6 +23,7 @@ async function init() {
   if (!guardTodayContent(contentId, today)) return;
 
   const todayRecords = sortByCreatedAt(getTodayRecords(records, today));
+  attempt = todayRecords.length + 1;
 
   // DOM反映
   document.getElementById("today-date").textContent = formatJpMDA(todayISO);
