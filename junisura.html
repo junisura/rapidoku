@@ -24,6 +24,7 @@
 import { getCurrentUser } from "./js/lib/auth.js";
 import { selectContentById } from "./js/lib/repository.js";
 import { formatYMDToJPMDA } from "./js/lib/date.js";
+import { convert, renderCategory } from "./js/lib/catogories.js";
 const ADMIN_USER_ID = "438fa051-6f94-4420-9015-dc1cd98f8a10";
 async function init() {
   const { user, error } = await getCurrentUser();
@@ -40,7 +41,6 @@ async function openText(e) {
     document.getElementById("content-id").textContent = "";
     document.getElementById("text-theme").textContent = "";
     document.getElementById("text-title").textContent = "";
-    document.getElementById("text-category").textContent = "";
     document.getElementById("text-body").textContent = "";
     document.getElementById("text-count").textContent = "";
   } else {
@@ -48,7 +48,7 @@ async function openText(e) {
     document.getElementById("content-id").textContent = `ID：${data.id}`;
     document.getElementById("text-theme").textContent = `（${data.theme}）`;
     document.getElementById("text-title").textContent = data.title;
-    document.getElementById("text-category").textContent = data.category;
+    renderCategory(convert(data.category));
     document.getElementById("text-body").textContent = data.text_body.replace(/\\n/g, "\n");
     document.getElementById("text-count").textContent = `文字数：${data.char_count}字`;
   }
@@ -97,10 +97,8 @@ window.addEventListener("DOMContentLoaded", async () => {
         <p id="today-date" class="text-muted"></p>
       </div>
       <div class="card__body">
-        <h3 id="text-title" class="text-title"></h3>
-        <div class="flex-area-center"><p class="category-frame">
-          <span class="category-label">カテゴリ</span><span id="text-category" class="text-category"></span>
-        </p></div>
+        <div id="category-frame" class="category-frame"></div>
+        <h3 id="text-title" class="text-title mt-4"></h3>
         <p id="text-body" class="text-body font-small"></p>
         <p id="text-count" class="text-muted mt-8 text-right"></p>
       </div>
