@@ -3,7 +3,7 @@ import { formatISOToYMD, isSameDay, formatYMDToJPMDA, formatMsToTime } from "../
 import { getCachedTodayContent } from "../lib/contents.js";
 import { getRecordsByDate, createRecord } from "../lib/records.js";
 import { Timer } from "../lib/timer.js";
-import { convert, renderCategory } from "../lib/catogories.js";
+import { renderCategory } from "../lib/catogories.js";
 
 // 初期化
 let isAuth = false;
@@ -25,7 +25,7 @@ async function init() {
   currentContent = await getCachedTodayContent(today);
   if (currentContent) {
     document.getElementById("text-title").textContent = currentContent.contents.title;
-    renderCategory(convert(currentContent.contents.category));
+    renderCategory(currentContent.contents.category);
     document.getElementById("text-body").textContent = currentContent.contents.text_body.replace(/\\n/g, "\n");
     document.getElementById("text-count").textContent = `文字数：${currentContent.contents.char_count}字`;
   } else {

@@ -4,7 +4,7 @@ import { initCalendar } from "../lib/calendar.js";
 import { getContentByDate } from "../lib/contents.js";
 import { getRecordsByDate, getRecordsByPeriod, calcCurrentStreak, calcMaxStreak, getStreakContext } from "../lib/records.js";
 import { renderRecordList } from "../lib/recordList.js";
-import { convert, renderCategory } from "../lib/catogories.js";
+import { renderCategory } from "../lib/catogories.js";
 
 let currentUserId;
 
@@ -89,7 +89,7 @@ async function renderDetail(dateStr) {
   const currentContent = await getContentByDate(dateStr);
   if (currentContent) {
     document.getElementById("text-title").textContent = currentContent.contents.title;
-    renderCategory(convert(currentContent.contents.category));
+    renderCategory(currentContent.contents.category);
     document.getElementById("text-body").textContent = currentContent.contents.text_body.replace(/\\n/g, "\n");
   } else {
     document.getElementById("text-title").textContent = "（教材取得失敗）";

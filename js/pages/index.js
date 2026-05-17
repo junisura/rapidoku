@@ -2,7 +2,7 @@ import { login, getCurrentUser, logout } from "../lib/auth.js";
 import { formatISOToYMD, formatYMDToJPMDA, formatYMDToJP } from "../lib/date.js";
 import { getCachedTodayContent } from "../lib/contents.js";
 import { getRecordsCountByDate, getBestRecord } from "../lib/records.js";
-import { convert, renderCategory } from "../lib/catogories.js";
+import { renderCategory } from "../lib/catogories.js";
 
 let today = "";
 
@@ -15,7 +15,7 @@ async function init() {
   const currentContent = await getCachedTodayContent(today);
   if (currentContent) {
     document.getElementById("text-title").textContent = currentContent.contents.title;
-    renderCategory(convert(currentContent.contents.category));
+    renderCategory(currentContent.contents.category);
     document.getElementById("openBtn").disabled = false;
   } else {
     document.getElementById("text-title").textContent = "（教材取得失敗）";

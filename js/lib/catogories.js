@@ -68,18 +68,3 @@ export function renderCategory(categoryId) {
   newImage.style.transform = `rotate(${CATEGORY_MASTER[categoryId].rotate}deg)`;
   document.getElementById("category-frame").appendChild(newImage);
 }
-
-// 後で消す----------------------------------------
-export function convert(category) {
-  let categoryName = "";
-  switch (category) {
-    case "地理・歴史":
-      categoryName = "history";
-      break;
-    default:
-      categoryName = category;
-      break;
-  }
-  return categoryName;
-}
-
