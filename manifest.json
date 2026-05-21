@@ -1,0 +1,26 @@
+{
+  "id": "/rapidoku/",
+  "name": "まいにち！ラピ読",
+  "short_name": "ラピ読",
+  "description": "声に出して、頭が冴える。1日5分の高速音読で脳を活性化",
+  "start_url": "/rapidoku/",
+  "scope": "/rapidoku/",
+  "display": "standalone",
+  "display_override": [
+    "standalone"
+  ],
+  "background_color": "#BFE3F7",
+  "theme_color": "#5DB7E8",
+  "icons": [
+    {
+      "src": "./img/rapidoku_192icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./img/rapidoku_512icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
