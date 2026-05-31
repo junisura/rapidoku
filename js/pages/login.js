@@ -5,6 +5,12 @@ let submitBtn;
 let passwordEl;
 let toggleEl;
 let errorEl;
+const allowList = [
+  "index.html",
+  "measurement.html",
+  "result.html",
+  "history.html"
+];
 
 async function handleSubmit(e) {
   e.preventDefault();	// ブラウザ標準submit処理をキャンセル
@@ -40,12 +46,11 @@ async function handleSubmit(e) {
     }
 
   }
-
   // 成功時リダイレクト
   const params = new URLSearchParams(location.search);
-  const redirect = params.get("redirect") || "./index.html";
-
-  location.href = redirect;
+  const redirect = params.get("redirect");
+  const address = allowList.includes(redirect) ? redirect : "index.html";
+  location.href = address;
 };
 
 function switchMode() {

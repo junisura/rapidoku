@@ -79,7 +79,7 @@ async function stopTimer() {
   const { user, error } = await getCurrentUser();
   if (!user) {
     alert("結果を保存するにはログインが必要です");
-    location.href = "./login.html?redirect=/measurement.html";
+    location.href = "./login.html?redirect=measurement.html";
     return;
   }
 

@@ -15,7 +15,8 @@ let memoOutput = null;
 async function init() {
   const { user, error } = await getCurrentUser();
   if (!user) {
-    location.href = "./login.html?redirect=/result.html";
+    alert("ログイン情報がありません。TOPに戻ります");
+    location.href = "./login.html?redirect=result.html";
     return;
   }
   const lastRec = JSON.parse(sessionStorage.getItem("lastRecord"));
