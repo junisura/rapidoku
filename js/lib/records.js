@@ -37,7 +37,7 @@ export async function getRecordsByDate(userId, today) {
 
   if (error) {
     console.error("records_fetch_error", { userId, today, error });
-    return null;
+    return [];
   }
 
   return data;

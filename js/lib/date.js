@@ -93,7 +93,7 @@ export function isSameDay(workDate) {
   const today = formatISOToYMD(new Date().toISOString());
 
   if (!workDate || workDate !== today) {
-    console.error("content_id_invalid", { contentId, workDate, expected });
+    console.error("content_id_invalid", { workDate });
     alert("日付が変わったためセッションを終了します");
     location.href = "./index.html";
     return false;
