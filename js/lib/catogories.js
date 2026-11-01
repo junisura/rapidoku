@@ -60,11 +60,20 @@ export const CATEGORY_MASTER = {
   },
 };
 export function renderCategory(categoryId) {
-  document.getElementById("category-frame").innerHTML = "";
+  const frame = document.getElementById("category-frame");
+  if (!frame) return;
+  frame.innerHTML = "";
+
+  const category = Object.hasOwn(CATEGORY_MASTER, categoryId) ? CATEGORY_MASTER[categoryId] : null;
+  if (!category) {
+    console.warn("未定義のカテゴリです:", categoryId);
+    return;
+  }
+
   const newImage = document.createElement("img");
-  newImage.src = CATEGORY_MASTER[categoryId].image;
-  newImage.alt = `カテゴリ：${CATEGORY_MASTER[categoryId].label}`;
+  newImage.src = category.image;
+  newImage.alt = `カテゴリ：${category.label}`;
   newImage.classList.add("category-image");
-  newImage.style.transform = `rotate(${CATEGORY_MASTER[categoryId].rotate}deg)`;
-  document.getElementById("category-frame").appendChild(newImage);
+  newImage.style.transform = `rotate(${category.rotate}deg)`;
+  frame.appendChild(newImage);
 }
