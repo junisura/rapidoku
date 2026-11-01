@@ -24,9 +24,9 @@ async function init() {
 
   const recCount = await getRecordsCountByDate(today);
   if (recCount > 0) {
-    document.getElementById("records-count").textContent = `このテキストは本日${recCount}回読まれました`;
+    document.getElementById("records-count").textContent = `このテキストは本日${recCount}回読まれました（全ユーザー合計）`;
   } else {
-    document.getElementById("records-count").textContent = `今日最初の音読をしてみませんか？`;
+    document.getElementById("records-count").textContent = `今日の音読、一番乗りしてみませんか？`;
   }
 
   if (user) {
